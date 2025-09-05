@@ -15,29 +15,36 @@
   <body>
     <main>
       <section>
-        <form>
+        <form id="form">
           <div class="form-group">
-            <label for="exampleInputEmail1"><strong>Enter title</strong></label>
+            <label for="title"><strong>Enter title</strong></label>
             <input
               type="text"
               class="form-control"
-              id="exampleInputEmail1"
+              id="title"
               aria-describedby="emailHelp"
               placeholder="Enter title"
             />
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1"
-              ><strong>enter description</strong></label
-            >
+            <label for="description"><strong>enter description</strong></label>
             <input
               type="text"
               class="form-control"
-              id="exampleInputPassword1"
+              id="description"
               placeholder="Enter description"
             />
           </div>
-          <button type="submit" id="btn-outline-primary" class="btn btn-outline-primary">Submit</button>
+          <button
+            type="submit"
+            id="btn-outline-primary"
+            class="btn btn-outline-primary"
+          >
+            Submit
+          </button>
+          <button class="btn btn-outline-primary" type="button">
+            <a href="/templates/home.html">voltar</a>
+          </button>
         </form>
       </section>
     </main>

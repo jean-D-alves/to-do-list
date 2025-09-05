@@ -15,49 +15,25 @@
   <body>
     <header id="header">
       <h1>TaskBord</h1>
-    </header>
-    <section id="tablebar">
-      <h1>tasks</h1>
       <button type="button" class="btn btn-outline-primary">
         <a href="/templates/newtask.html">+ new tasks</a>
       </button>
+    </header>
+    <section id="tablebar">
+      <h1>tasks</h1>
     </section>
     <section>
-      <table class="table">
+      <table id="table" class="table">
         <thead>
           <tr>
-            <th>priorioty title</th>
+            <th>title</th>
             <th>description</th>
             <th>creation by</th>
             <th>creation-at</th>
             <th>actions</th>
           </tr>
         </thead>
-        <tbody class="table-group-divider">
-          <tr>
-            <th>teste</th>
-            <th>teste description</th>
-            <th>jean</th>
-            <th>29/08/2025</th>
-            <th>
-              <button>
-                <img
-                  class="icon"
-                  src="/static/assest/verificar.svg"
-                  alt=""
-                /></button
-              ><button>
-                <img
-                  class="icon"
-                  src="/static/assest/lapis.svg"
-                  alt=""
-                /></button
-              ><button>
-                <img class="icon" src="/static/assest/lixo.svg" alt="" />
-              </button>
-            </th>
-          </tr>
-        </tbody>
+        <tbody id="tabletask" class="table-group-divider"></tbody>
       </table>
     </section>
     <script src="/static/script/home.js"></script>
