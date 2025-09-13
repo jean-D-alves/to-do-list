@@ -1,0 +1,41 @@
+body {
+  margin: 10px;
+}
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#tablebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+a {
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+a:hover {
+  color: #ffffff;
+}
+button {
+    border: 0;
+    background-color: #ffffff;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+tr.donetrue td, tr.donetrue th{
+  background-color: #d4d4d4;
+  color: #000000;
+}
+.donetruebtn{
+  background-color: #d4d4d4;
+  color: #000000;
+}
+.btn-group{
+  display: flex;
+  gap: 15px;
+}
