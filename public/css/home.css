@@ -19,23 +19,42 @@ a:hover {
   color: #ffffff;
 }
 button {
-    border: 0;
-    background-color: #ffffff;
+  border: 0;
+  background-color: #ffffff;
 }
 .icon {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  transition: width 0.2s, height 0.2s ease;
 }
-tr.donetrue td, tr.donetrue th{
+.icon:hover {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+}
+tr.donetrue td,
+tr.donetrue th {
   background-color: #d4d4d4;
   color: #000000;
 }
-.donetruebtn{
+.donetruebtn {
   background-color: #d4d4d4;
   color: #000000;
 }
-.btn-group{
-  display: flex;
+#menu{
+  display: none;
   gap: 15px;
+  flex-direction: column;
+}
+#btnMenu span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: black;
+  border-radius: 3px;
+  transition: 0.3s;
+}
+#menu.active {
+  display: flex;
 }

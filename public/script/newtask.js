@@ -1,17 +1,16 @@
-// pegar inputs
-// salvar input com localstore
 
 const form = document.getElementById("form");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  const params = new URLSearchParams(window.location.search)
+  const users = params.get("user")
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
-  const user = "jean";
+  const user = `${users}`;
   const day = new Date().getDay();
   const month = new Date().getHours();
   const year = new Date().getFullYear();
-
   const datatask = {
     title: `${title}`,
     description: `${description}`,

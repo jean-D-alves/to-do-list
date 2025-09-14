@@ -7,5 +7,5 @@ const __dirname = path.resolve()
 app.use(express.static(path.join(__dirname,"public")))
 
 app.listen(3000, ()=>{
-    console.log('server run in http://localhost:3000')
+    console.log('server run in http://localhost:3000/index.html?user=jean')
 })

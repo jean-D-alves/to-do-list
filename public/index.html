@@ -15,13 +15,53 @@
   <body>
     <header id="header">
       <h1>TaskBord</h1>
-      <button type="button" class="btn btn-outline-primary">
-        <a href="/newtask.html">+ new tasks</a>
-      </button>
     </header>
     <section id="tablebar">
       <h1>tasks</h1>
+      <aside id="menu">
+        <div class="btn-group" role="group">
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            user
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="index.html?user=jean">jean</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="index.html?user=antonio"
+                >antonio</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="btn-group" role="group">
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            new tasks
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="newtask.html?user=jean">jean</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="newtask.html?user=antonio"
+                >antonio</a
+              >
+            </li>
+          </ul>
+        </div>
+      </aside>
     </section>
+    <div id="btnMenu" onclick="btnMenu()">☰</div>
     <section>
       <table id="table" class="table">
         <thead>
