@@ -50,7 +50,6 @@ tr.donetrue th {
   border-radius: 3px;
   transition: 0.3s;
 }
-
 #menu {
   display: none;
   flex-direction: column;
@@ -64,12 +63,11 @@ tr.donetrue th {
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  transition: 0.3s;
 }
-
 #menu.active {
   display: flex;
 }
-
 #btnMenu {
   position: fixed;
   top: 15px;

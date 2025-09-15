@@ -1,10 +1,14 @@
 const datatask = localStorage.getItem("datatask");
 async function getTacks() {
-  const params = new URLSearchParams(window.location.search)
-  const users = params.get("user")
+  const params = new URLSearchParams(window.location.search);
+  const users = params.get("user");
   try {
-    const DoneTrue = await fetch(`http://localhost:3001/tacks?user=${users}&done=true`);
-    const Donefalse = await fetch(`http://localhost:3001/tacks?user=${users}&done=false`);
+    const DoneTrue = await fetch(
+      `http://localhost:3001/tacks?user=${users}&done=true`
+    );
+    const Donefalse = await fetch(
+      `http://localhost:3001/tacks?user=${users}&done=false`
+    );
     const dataDoneTrue = await DoneTrue.json();
     const dataDonefalse = await Donefalse.json();
     const table = document.getElementById("tabletask");
@@ -111,6 +115,7 @@ async function taskdone(id, done) {
         },
         body: JSON.stringify({ done: true }),
       });
+      getTacks();
     } catch (err) {
       console.log(err, "erro");
     }
@@ -123,12 +128,13 @@ async function taskdone(id, done) {
         },
         body: JSON.stringify({ done: false }),
       });
+      getTacks();
     } catch (err) {
       console.log(err, "erro");
     }
   }
 }
-function btnMenu(){
-  document.getElementById("menu").classList.toggle('active')
+function btnMenu() {
+  document.getElementById("menu").classList.toggle("active");
 }
 getTacks();
