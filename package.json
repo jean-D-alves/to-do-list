@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "cliente": "nodemon server.js",          
+    "cliente": "nodemon server.js",
     "server": "json-server --watch db.json --port 3001",
     "dev": "concurrently \"npm run cliente\" \"npm run server\""
   },
