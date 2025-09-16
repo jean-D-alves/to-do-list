@@ -43,6 +43,7 @@ async function getTacks() {
     }
     const htmlTrue = dataDoneTrue.map((t) => RenderRow(t, true)).join("");
     const htmlfalse = dataDonefalse.map((t) => RenderRow(t, false)).join("");
+
     table.innerHTML = htmlfalse + htmlTrue;
   } catch (err) {
     console.log(err, "erro");
