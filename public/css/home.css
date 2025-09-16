@@ -35,6 +35,7 @@ button {
 }
 tr.donetrue td,
 tr.donetrue th {
+  transition: 0.3s;
   background-color: #d4d4d4;
   color: #000000;
 }

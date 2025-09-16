@@ -12,62 +12,37 @@ async function getTacks() {
     const dataDoneTrue = await DoneTrue.json();
     const dataDonefalse = await Donefalse.json();
     const table = document.getElementById("tabletask");
-    const htmlTrue = dataDoneTrue
-      .map(
-        (t) => `
-          <tr class="donetrue">
-            <td>${t.title}</td>
-            <td>${t.description}</td>
-            <td>${t.user}</td>
-            <td>${t.date}</td>
-            <td>
-              <button class="donetruebtn"onclick="taskdone('${t.id}',${t.done})" id="${t.id}">
-                <img
-                  class="icon"
-                  src="/css/assest/verificar.svg"
-                  alt=""
-                /></button
-              ><button class="donetruebtn" onclick="editask('${t.id}')">
-                <img
-                  class="icon"
-                  src="/css/assest/lapis.svg"
-                  alt=""
-                /></button
-              ><button class="donetruebtn" onclick="deletetask('${t.id}')">
+    function RenderRow(t, isdone) {
+      return ` 
+      <tr class="${isdone ? "donetrue" : ""}">
+             <td>${t.title}</td>
+             <td>${t.description}</td>
+             <td>${t.user}</td>
+             <td>${t.date}</td>
+             <td>
+               <button class="${isdone ? "donetruebtn" : ""}"onclick="taskdone('${t.id}',${
+        t.done
+      })" id="${t.id}">
+                 <img
+                   class="icon"
+                   src="/css/assest/verificar.svg"
+                   alt=""
+                 /></button
+               ><button class="${isdone ? "donetruebtn" : ""}" onclick="editask('${t.id}')">
+                 <img
+                   class="icon"
+                   src="/css/assest/lapis.svg"
+                   alt=""
+                 /></button
+               ><button class="${isdone ? "donetruebtn" : ""}" onclick="deletetask('${t.id}')">
                 <img class="icon" src="/css/assest/lixo.svg" alt="" />
-              </button>
-            </td>
-          </tr>`
-      )
-      .join("");
-    const htmlfalse = dataDonefalse
-      .map(
-        (t) => `
-            <tr class="">
-            <td>${t.title}</td>
-            <td>${t.description}</td>
-            <td>${t.user}</td>
-            <td>${t.date}</td>
-            <td>
-              <button onclick="taskdone('${t.id}',${t.done})" id="${t.id}">
-                <img
-                  class="icon"
-                  src="/css/assest/verificar.svg"
-                  alt=""
-                /></button
-              ><button onclick="editask('${t.id}')">
-                <img
-                  class="icon"
-                  src="/css/assest/lapis.svg"
-                  alt=""
-                /></button
-              ><button onclick="deletetask('${t.id}')">
-                <img class="icon" src="/css/assest/lixo.svg" alt="" />
-              </button>
-            </td>
-          </tr>`
-      )
-      .join("");
+               </button>
+             </td>
+           </tr>
+      `;
+    }
+    const htmlTrue = dataDoneTrue.map((t) => RenderRow(t, true)).join("");
+    const htmlfalse = dataDonefalse.map((t) => RenderRow(t, false)).join("");
     table.innerHTML = htmlfalse + htmlTrue;
   } catch (err) {
     console.log(err, "erro");
