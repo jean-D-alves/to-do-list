@@ -1,10 +1,10 @@
-
 const form = document.getElementById("form");
-
+const div = document.getElementById("divback");
+const params = new URLSearchParams(window.location.search);
+const users = params.get("user");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const params = new URLSearchParams(window.location.search)
-  const users = params.get("user")
+
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
   const user = `${users}`;
@@ -16,13 +16,13 @@ form.addEventListener("submit", async (e) => {
     description: `${description}`,
     user: `${user}`,
     date: `${day}/${month}/${year}`,
-    done: false
+    done: 0,
   };
-  localStorage.getItem("datatask")
+  localStorage.getItem("datatask");
   localStorage.setItem("datatask", JSON.stringify(datatask));
   console.log("Do localStorage:", JSON.parse(localStorage.getItem("datatask")));
   try {
-    const response = await fetch("http://localhost:3001/tacks", {
+    const response = await fetch("http://localhost:5000/tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,3 +34,10 @@ form.addEventListener("submit", async (e) => {
     console.log(err, "erro");
   }
 });
+function back() {
+  div.innerHTML = `
+          <button class="btn btn-primary" type="button">
+            <a href="/index.html?user=${users}">voltar</a>
+          </button>`;
+}
+back();

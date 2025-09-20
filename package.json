@@ -1,13 +1,18 @@
 {
   "type": "module",
   "scripts": {
-    "cliente": "nodemon server.js",
-    "server": "json-server --watch db.json --port 3001",
+    "cliente": "nodemon main.js",
+    "server": "nodemon server/model.js",
     "dev": "concurrently \"npm run cliente\" \"npm run server\""
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "json-server": "^1.0.0-beta.3"
+    "json-server": "^1.0.0-beta.3",
+    "mongoose": "^8.18.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

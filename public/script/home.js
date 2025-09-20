@@ -4,10 +4,10 @@ const users = params.get("user");
 async function getTacks() {
   try {
     const DoneTrue = await fetch(
-      `http://localhost:3001/tacks?user=${users}&done=true`
+      `http://localhost:5000/get-task?user=${users}&done=1`
     );
     const Donefalse = await fetch(
-      `http://localhost:3001/tacks?user=${users}&done=false`
+      `http://localhost:5000/get-task?user=${users}&done=0`
     );
     const dataDoneTrue = await DoneTrue.json();
     const dataDonefalse = await Donefalse.json();
@@ -22,7 +22,7 @@ async function getTacks() {
              <td>
                <button class="${
                  isdone ? "donetruebtn" : ""
-               }"onclick="taskdone('${t.id}',${t.done})" id="${t.id}">
+               }"onclick="taskdone('${t.id}',${t.done})">
                  <img
                    class="icon"
                    src="/css/assest/verificar.svg"
@@ -45,8 +45,8 @@ async function getTacks() {
            </tr>
       `;
     }
-    const htmlTrue = dataDoneTrue.map((t) => RenderRow(t, true)).join("");
-    const htmlfalse = dataDonefalse.map((t) => RenderRow(t, false)).join("");
+    const htmlTrue = dataDoneTrue.map((t) => RenderRow(t, 1)).join("");
+    const htmlfalse = dataDonefalse.map((t) => RenderRow(t, 0)).join("");
 
     table.innerHTML = htmlfalse + htmlTrue;
   } catch (err) {
@@ -55,7 +55,7 @@ async function getTacks() {
 }
 async function deletetask(id) {
   try {
-    const response = await fetch(`http://localhost:3001/tacks/${id}`, {
+    const response = await fetch(`http://localhost:5000/tasks/${id}`, {
       method: "DELETE",
     });
     getTacks();
@@ -64,7 +64,9 @@ async function deletetask(id) {
   }
 }
 async function editask(id) {
-  const res = await fetch(`http://localhost:3001/tacks/${id}`);
+  const res = await fetch(`http://localhost:5000/get-tasks/${id}`,{
+    method:'GET'
+  });
   if (!res.ok) throw new Error("Não foi possível buscar a task");
   const task = await res.json();
 
@@ -100,15 +102,23 @@ async function editask(id) {
   const form = document.getElementById("form");
   form.onsubmit = async (e) => {
     e.preventDefault();
+
     const title = document.getElementById("titleInput").value.trim();
     const description = document.getElementById("descInput").value.trim();
+    const body = {};
+    if(title) {
+      body.title = title
+    }
+    if(description){
+      body.description = description
+    }
     try {
-      const editresponse = await fetch(`http://localhost:3001/tacks/${id}`, {
+      const editresponse = await fetch(`http://localhost:5000/tasks/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description }),
+        body: JSON.stringify(body),
       });
       document.getElementById("ModalContainer").innerHTML = "";
       await getTacks();
@@ -118,34 +128,20 @@ async function editask(id) {
   };
 }
 async function taskdone(id, done) {
-  if (done === false) {
-    try {
-      const responsedone = await fetch(`http://localhost:3001/tacks/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ done: true }),
-      });
-      getTacks();
-    } catch (err) {
-      console.log(err, "erro");
-    }
-  } else {
-    try {
-      const responsedone = await fetch(`http://localhost:3001/tacks/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ done: false }),
-      });
-      getTacks();
-    } catch (err) {
-      console.log(err, "erro");
-    }
+  try {
+    const responsedone = await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ done: done ? 0 : 1 }),
+    });
+    getTacks();
+  } catch (err) {
+    console.log(err, "erro");
   }
 }
+
 function addBtnGrups() {
   const div = document.getElementById("btnGroupheader");
   div.innerHTML = `
