@@ -1,8 +1,18 @@
 main {
   justify-content: center;
   display: flex;
+  flex-direction: column;
   border-radius: 10px;
   padding: 20px;
+  margin-inline: 30%;
+}
+#alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;  /* acima do restante */
+  width: 50%;     /* ou 100%, se preferir */
 }
 section {
   background-color: #dadada;

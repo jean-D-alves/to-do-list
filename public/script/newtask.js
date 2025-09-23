@@ -29,9 +29,21 @@ form.addEventListener("submit", async (e) => {
       },
       body: JSON.stringify(datatask),
     });
-    alert("item salvo");
+
+document.getElementById("alert").innerHTML = `
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>sucess</strong> in add task
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>`;
+
   } catch (err) {
     console.log(err, "erro");
+    document.getElementById("alert").innerHTML = `
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>failure</strong> in add task
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>`;
+
   }
 });
 function back() {
