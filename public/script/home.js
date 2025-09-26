@@ -1,13 +1,14 @@
 const datatask = localStorage.getItem("datatask");
-const params = new URLSearchParams(window.location.search);
-const users = params.get("user");
+const userDataString = sessionStorage.getItem("userData");
+const userData = userDataString ? JSON.parse(userDataString): null
+const users = userData ? userData.name : null
 async function getTacks() {
   try {
     const DoneTrue = await fetch(
-      `http://localhost:5000/get-task?user=${users}&done=1`
+      `http://localhost:5000/task?user=${users}&done=1`
     );
     const Donefalse = await fetch(
-      `http://localhost:5000/get-task?user=${users}&done=0`
+      `http://localhost:5000/task?user=${users}&done=0`
     );
     const dataDoneTrue = await DoneTrue.json();
     const dataDonefalse = await Donefalse.json();
@@ -64,7 +65,7 @@ async function deletetask(id) {
   }
 }
 async function editask(id) {
-  const res = await fetch(`http://localhost:5000/get-tasks/${id}`,{
+  const res = await fetch(`http://localhost:5000/tasks/${id}`,{
     method:'GET'
   });
   if (!res.ok) throw new Error("Não foi possível buscar a task");
@@ -156,10 +157,10 @@ function addBtnGrups() {
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="index.html?user=jean">jean</a>
+              <a class="dropdown-item" href="index.html">jean</a>
             </li>
             <li>
-              <a class="dropdown-item" href="index.html?user=antonio"
+              <a class="dropdown-item" href="index.html"
                 >antonio</a
               >
             </li>

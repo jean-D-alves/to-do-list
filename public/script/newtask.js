@@ -1,7 +1,8 @@
 const form = document.getElementById("form");
 const div = document.getElementById("divback");
-const params = new URLSearchParams(window.location.search);
-const users = params.get("user");
+const userDataString = sessionStorage.getItem("userData");
+const userData = userDataString ? JSON.parse(userDataString): null
+const users = userData ? userData.name : null
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -49,7 +50,7 @@ document.getElementById("alert").innerHTML = `
 function back() {
   div.innerHTML = `
           <button class="btn btn-primary" type="button">
-            <a href="/index.html?user=${users}">voltar</a>
+            <a href="/template/index.html">voltar</a>
           </button>`;
 }
 back();

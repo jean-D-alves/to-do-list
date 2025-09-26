@@ -31,7 +31,7 @@ app.use(async (req, res, next) => {
   req.db = await opendb();
   next();
 });
-app.get("/get-tasks/:id", async (req,res)=>{
+app.get("/tasks/:id", async (req,res)=>{
   const {id} = req.params
   try{
     const task = await req.db.get("SELECT * FROM tasks WHERE id = ?",[id])
@@ -40,7 +40,7 @@ app.get("/get-tasks/:id", async (req,res)=>{
     res.status(500).json({eroor : err.message})
   }
 })
-app.get("/get-task", async (req, res) => {
+app.get("/task", async (req, res) => {
   const { user, done } = req.query;
 
   try {
@@ -107,6 +107,19 @@ app.delete("/tasks/:id",async (req,res)=>{
     console.log("deu bom")
   }catch(err){
     res.status(500).json({erro: err.message})
+  }
+})
+app.post("/users", async (req,res)=>{
+  const {email , password} = req.body
+  try{
+    const db = await opendb()
+    const user = await db.get("SELECT * FROM users WHERE password = ? AND email = ?",[password, email])
+    if(!user){
+      res.status(401).json({ error: "password or email invalid" });
+    }
+    res.status(201).json(user)
+  }catch(error){
+    res.status(500).json({error:error.message})
   }
 })
 initDb().then(() => {
