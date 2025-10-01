@@ -1,9 +1,15 @@
 {
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
     "front": "nodemon main.js",
     "back": "nodemon server/model.js",
     "dev": "concurrently \"npm run front\" \"npm run back\""
+=======
+    "cliente": "nodemon main.js",
+    "server": "nodemon server/model.js",
+    "dev": "concurrently \"npm run cliente\" \"npm run server\""
+>>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -11,13 +17,17 @@
     "express": "^5.1.0",
     "json-server": "^1.0.0-beta.3",
     "mongoose": "^8.18.1",
+<<<<<<< HEAD
     "sequelize": "^6.37.7",
+=======
+>>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.10"
+<<<<<<< HEAD
   },
   "name": "to-do-list",
   "version": "1.0.0",
@@ -34,4 +44,7 @@
     "url": "https://github.com/jean-D-alves/to-do-list/issues"
   },
   "homepage": "https://github.com/jean-D-alves/to-do-list#readme"
+=======
+  }
+>>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
 }
