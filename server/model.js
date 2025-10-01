@@ -131,6 +131,8 @@ app.post("/users", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// app.post("/users", async (req,res)=>{
+// })
 initDb().then(() => {
   app.listen(5000, () =>
     console.log(`Servidor rodando em http://localhost:5000`)
