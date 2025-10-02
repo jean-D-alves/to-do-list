@@ -1,23 +1,20 @@
 const datatask = localStorage.getItem("datatask");
 const userDataString = sessionStorage.getItem("userData");
-<<<<<<< HEAD
 const userData = userDataString ? JSON.parse(userDataString) : null;
 const users = userData ? userData.name : null;
-async function getTacks() {
-  if (userData === null) {
+async function getUser() {
+  if (users === null) {
     window.location.href = "http://localhost:3000/template/loginPage.html";
   }
-=======
-const userData = userDataString ? JSON.parse(userDataString): null
-const users = userData ? userData.name : null
-async function getTacks() {
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
+}
+async function getTasks() {
+  getUser()
   try {
     const DoneTrue = await fetch(
-      `http://localhost:5000/task?user=${users}&done=1`
+      `http://localhost:5000/tasks?user=${users}&done=1`
     );
     const Donefalse = await fetch(
-      `http://localhost:5000/task?user=${users}&done=0`
+      `http://localhost:5000/tasks?user=${users}&done=0`
     );
     const dataDoneTrue = await DoneTrue.json();
     const dataDonefalse = await Donefalse.json();
@@ -68,19 +65,14 @@ async function deletetask(id) {
     const response = await fetch(`http://localhost:5000/tasks/${id}`, {
       method: "DELETE",
     });
-    getTacks();
+    getTasks();
   } catch (err) {
     console.log(err, "erro");
   }
 }
 async function editask(id) {
-<<<<<<< HEAD
   const res = await fetch(`http://localhost:5000/tasks/${id}`, {
     method: "GET",
-=======
-  const res = await fetch(`http://localhost:5000/tasks/${id}`,{
-    method:'GET'
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
   });
   if (!res.ok) throw new Error("Não foi possível buscar a task");
   const task = await res.json();
@@ -121,32 +113,32 @@ async function editask(id) {
     const title = document.getElementById("titleInput").value.trim();
     const description = document.getElementById("descInput").value.trim();
     const body = {};
-<<<<<<< HEAD
+
     if (title) {
       body.title = title;
     }
     if (description) {
       body.description = description;
-=======
-    if(title) {
-      body.title = title
-    }
-    if(description){
-      body.description = description
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
-    }
-    try {
-      const editresponse = await fetch(`http://localhost:5000/tasks/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      document.getElementById("ModalContainer").innerHTML = "";
-      await getTacks();
-    } catch (err) {
-      console.log(err, "erro");
+
+      if (title) {
+        body.title = title;
+      }
+      if (description) {
+        body.description = description;
+      }
+      try {
+        const editresponse = await fetch(`http://localhost:5000/tasks/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+        document.getElementById("ModalContainer").innerHTML = "";
+        getTasks();
+      } catch (err) {
+        console.log(err, "erro");
+      }
     }
   };
 }
@@ -159,7 +151,7 @@ async function taskdone(id, done) {
       },
       body: JSON.stringify({ done: done ? 0 : 1 }),
     });
-    getTacks();
+    getTasks();
   } catch (err) {
     console.log(err, "erro");
   }
@@ -171,33 +163,15 @@ function addBtnGrups() {
         <div class="btn-group" role="group">
           <button
             type="button"
-<<<<<<< HEAD
+
             class="btn btn-primary"
           >
           <a class="dropdown-item" href="loginPage.html">change user</a>            
           </button>
-=======
-            class="btn btn-primary dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            user
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="index.html">jean</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="index.html"
-                >antonio</a
-              >
-            </li>
-          </ul>
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
         </div>
         <button class="btn btn-primary">
           <a class="dropdown-item" href="newtask.html?user=${users}">new task</a>
         </button>`;
 }
 addBtnGrups();
-getTacks();
+getTasks();

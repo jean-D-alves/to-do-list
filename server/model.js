@@ -5,7 +5,6 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
-
 app.use(express.json());
 
 async function opendb() {
@@ -14,49 +13,45 @@ async function opendb() {
     driver: sqlite3.Database,
   });
 }
+
 async function initDb() {
   const db = await opendb();
   await db.exec(`
-        CREATE TABLE IF NOT EXISTS tasks(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-<<<<<<< HEAD
-            description TEXT NOT NULL,
-=======
-            description TEXT NOT NULL, 
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
-            user TEXT NOT NULL,
-            date text,
-            done INTEGER DEFAULT 0
-        )`);
+    CREATE TABLE IF NOT EXISTS tasks(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      description TEXT NOT NULL,
+      user TEXT NOT NULL,
+      date TEXT,
+      done INTEGER DEFAULT 0
+    )`);
+  
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS users(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL
+    )`);
+
   return db;
 }
+
 app.use(async (req, res, next) => {
   req.db = await opendb();
   next();
 });
-<<<<<<< HEAD
+
 app.get("/tasks/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const task = await req.db.get("SELECT * FROM tasks WHERE id = ?", [id]);
     res.status(200).json(task);
   } catch (err) {
-    res.status(500).json({ eroor: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
-=======
-app.get("/tasks/:id", async (req,res)=>{
-  const {id} = req.params
-  try{
-    const task = await req.db.get("SELECT * FROM tasks WHERE id = ?",[id])
-    res.status(200).json(task)
-  }catch(err){
-    res.status(500).json({eroor : err.message})
-  }
-})
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
-app.get("/task", async (req, res) => {
+
+app.get("/tasks", async (req, res) => {
   const { user, done } = req.query;
 
   try {
@@ -67,138 +62,78 @@ app.get("/task", async (req, res) => {
       query += "AND user = ? ";
       params.push(user);
     }
-    let doneValue = null;
     if (done !== undefined) {
-      doneValue = done === "true" || done === "1" ? 1 : 0;
+      const doneValue = done === "true" || done === "1" ? 1 : 0;
       query += "AND done = ? ";
       params.push(doneValue);
     }
-    const task = await req.db.all(query, params);
-    res.status(200).json(task);
-    return task;
+
+    const tasks = await req.db.all(query, params);
+    res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 app.post("/tasks", async (req, res) => {
   try {
     const { title, description, user, date, done } = req.body;
     const result = await req.db.run(
-<<<<<<< HEAD
-      "INSERT INTO tasks (title,description,user,date,done) VALUES (?,?,?,?,?)",
+      "INSERT INTO tasks (title, description, user, date, done) VALUES (?, ?, ?, ?, ?)",
       [title, description, user, date, done ? 1 : 0]
-=======
-      "INSERT INTO tasks (title,description, user,date, done) VALUES (?,?,?,?,?)",
-      [title, description, user, date || null, done ? 1 : 0]
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
     );
-    res.status(201).json({ id: result.lastID, title, description, user, done });
+    res.status(201).json({ id: result.lastID, title, description, user, date, done });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 app.patch("/tasks/:id", async (req, res) => {
   const { id } = req.params;
   const { done, title, description } = req.body;
 
-  if (done !== undefined) {
-    try {
-      const db = await opendb();
-      await db.run("UPDATE tasks SET done = ? WHERE id = ?", [done, id]);
-<<<<<<< HEAD
-      const updateDoneTask = await db.get("SELECT * FROM tasks WHERE id = ?", [
-        id,
-      ]);
-=======
-      const updateDoneTask = await db.get("SELECT * FROM tasks WHERE id = ?", [id]);
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
-      res.status(200).json(updateDoneTask);
-    } catch (err) {
-      res.status(500).json({ erro: err.message });
+  try {
+    if (done !== undefined) {
+      await req.db.run("UPDATE tasks SET done = ? WHERE id = ?", [done, id]);
     }
-  }
-<<<<<<< HEAD
-  if (title !== undefined && description !== undefined) {
-    const db = await opendb();
-    await db.run("UPDATE tasks SET title = ?, description = ? WHERE id = ?", [
-      title,
-      description,
-      id,
-    ]);
-    const updateTask = await db.get("SELECT * FROM tasks WHERE id = ?", [id]);
-    res.status(200).json(updateTask);
+    if (title !== undefined && description !== undefined) {
+      await req.db.run("UPDATE tasks SET title = ?, description = ? WHERE id = ?", [title, description, id]);
+    }
+    const updatedTask = await req.db.get("SELECT * FROM tasks WHERE id = ?", [id]);
+    res.status(200).json(updatedTask);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
+
 app.delete("/tasks/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const db = await opendb();
-    await db.run("DELETE FROM tasks WHERE id = ?", [id]);
-    const deleteTask = await db.get("SELECT * FROM tasks WHERE id = ?", [id]);
-    res.status(200).json(deleteTask);
-    console.log("deu bom");
+    await req.db.run("DELETE FROM tasks WHERE id = ?", [id]);
+    res.status(200).json({ message: "Task deletada com sucesso", id });
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
+
 app.post("/users", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const db = await opendb();
-    const user = await db.get(
+    const user = await req.db.get(
       "SELECT * FROM users WHERE password = ? AND email = ?",
       [password, email]
     );
     if (!user) {
-      res.status(401).json({ error: "password or email invalid" });
+      return res.status(401).json({ error: "password or email invalid" });
     }
-    res.status(201).json(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
-// app.post("/users", async (req,res)=>{
-// })
-=======
-  if(title !== undefined && description !== undefined){
-    const db = await opendb()
-    await db.run("UPDATE tasks SET title = ?, description = ? WHERE id = ?",[title,description,id])
-    const updateTask = await db.get("SELECT * FROM tasks WHERE id = ?",[id])
-    res.status(200).json(updateTask)
-  } 
-});
-app.delete("/tasks/:id",async (req,res)=>{
-  const {id} = req.params
-  try{
-    const db = await opendb()
-    await db.run("DELETE FROM tasks WHERE id = ?",[id])
-    const deleteTask = await db.get("SELECT * FROM tasks WHERE id = ?",[id])
-    res.status(200).json(deleteTask)
-    console.log("deu bom")
-  }catch(err){
-    res.status(500).json({erro: err.message})
-  }
-})
-app.post("/users", async (req,res)=>{
-  const {email , password} = req.body
-  try{
-    const db = await opendb()
-    const user = await db.get("SELECT * FROM users WHERE password = ? AND email = ?",[password, email])
-    if(!user){
-      res.status(401).json({ error: "password or email invalid" });
-    }
-    res.status(201).json(user)
-  }catch(error){
-    res.status(500).json({error:error.message})
-  }
-})
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
+
 initDb().then(() => {
   app.listen(5000, () =>
     console.log(`Servidor rodando em http://localhost:5000`)
   );
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc

@@ -16,11 +16,7 @@ form.addEventListener("submit", async (e) => {
       },
       body: JSON.stringify(user),
     });
-<<<<<<< HEAD
-    if (response.ok) {
-=======
-    if (response) {
->>>>>>> 28e5cce492d21075ed9186f3759732baf9a9b8bc
+  if (response.ok) {
       const userData = await response.json();
       sessionStorage.setItem("userData", JSON.stringify(userData));
       window.location.href = "http://localhost:3000/template/index.html";
