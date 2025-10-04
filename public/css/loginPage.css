@@ -1,0 +1,54 @@
+main {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 20px;
+  margin-inline: 30%;
+}
+#alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;  /* acima do restante */
+  width: 50%;     /* ou 100%, se preferir */
+}
+section {
+  background-color: #dadada;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border-radius: 10px;
+  padding: 30px;
+  width: auto;
+  height: auto;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@keyframes btnPulso {
+  0%,
+  100% {
+    border: 2px solid #0000ff;
+  }
+  50% {
+    border: 2px solid #02027d;
+  }
+}
+.btn-outline-primary {
+  transition: border 0.3s ease;
+}
+.btn-outline-primary:hover {
+  animation: btnPulso 1.2s infinite;
+}
+a {
+  text-decoration: none;
+}
+#divback {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+}

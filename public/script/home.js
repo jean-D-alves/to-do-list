@@ -1,78 +1,80 @@
 const datatask = localStorage.getItem("datatask");
 const userDataString = sessionStorage.getItem("userData");
 const userData = userDataString ? JSON.parse(userDataString) : null;
-const users = userData ? userData.name : null;
+
 async function getUser() {
-  if (users === null) {
+  if (!userData) {
     window.location.href = "http://localhost:3000/template/loginPage.html";
   }
 }
+
 async function getTasks() {
-  getUser()
+  getUser();
   try {
-    const DoneTrue = await fetch(
-      `http://localhost:5000/tasks?user=${users}&done=1`
-    );
-    const Donefalse = await fetch(
-      `http://localhost:5000/tasks?user=${users}&done=0`
-    );
+    const DoneTrue = await fetch(`http://localhost:5000/tasks?done=1`, {
+      credentials: "include",
+    });
+    const Donefalse = await fetch(`http://localhost:5000/tasks?done=0`, {
+      credentials: "include",
+    });
+
     const dataDoneTrue = await DoneTrue.json();
     const dataDonefalse = await Donefalse.json();
     const table = document.getElementById("tabletask");
+
     function RenderRow(t, isdone) {
       return ` 
       <tr class="${isdone ? "donetrue" : ""}">
              <td>${t.title}</td>
              <td>${t.description}</td>
-             <td>${t.user}</td>
              <td>${t.date}</td>
              <td>
                <button class="${
                  isdone ? "donetruebtn" : ""
-               }"onclick="taskdone('${t.id}',${t.done})">
-                 <img
-                   class="icon"
-                   src="/css/assest/verificar.svg"
-                   alt=""
-                 /></button
-               ><button class="${
+               }" onclick="taskdone('${t.id}',${t.done})">
+                 <img class="icon" src="/css/assest/verificar.svg" alt=""/>
+               </button>
+               <button class="${
                  isdone ? "donetruebtn" : ""
                }" onclick="editask('${t.id}')">
-                 <img
-                   class="icon"
-                   src="/css/assest/lapis.svg"
-                   alt=""
-                 /></button
-               ><button class="${
+                 <img class="icon" src="/css/assest/lapis.svg" alt=""/>
+               </button>
+               <button class="${
                  isdone ? "donetruebtn" : ""
                }" onclick="deletetask('${t.id}')">
-                <img class="icon" src="/css/assest/lixo.svg" alt="" />
+                 <img class="icon" src="/css/assest/lixo.svg" alt=""/>
                </button>
              </td>
            </tr>
       `;
     }
+
     const htmlTrue = dataDoneTrue.map((t) => RenderRow(t, 1)).join("");
     const htmlfalse = dataDonefalse.map((t) => RenderRow(t, 0)).join("");
 
     table.innerHTML = htmlfalse + htmlTrue;
   } catch (err) {
     console.log(err, "erro");
+    window.location.href = "http://localhost:3000/template/loginPage.html";
   }
 }
+
 async function deletetask(id) {
   try {
-    const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+    await fetch(`http://localhost:5000/tasks/${id}`, {
       method: "DELETE",
+      credentials: "include",
     });
     getTasks();
   } catch (err) {
     console.log(err, "erro");
   }
 }
+
 async function editask(id) {
   const res = await fetch(`http://localhost:5000/tasks/${id}`, {
     method: "GET",
+    credentials: "include",
   });
   if (!res.ok) throw new Error("Não foi possível buscar a task");
   const task = await res.json();
@@ -109,46 +111,34 @@ async function editask(id) {
   const form = document.getElementById("form");
   form.onsubmit = async (e) => {
     e.preventDefault();
-
     const title = document.getElementById("titleInput").value.trim();
     const description = document.getElementById("descInput").value.trim();
+
     const body = {};
+    if (title) body.title = title;
+    if (description) body.description = description;
 
-    if (title) {
-      body.title = title;
-    }
-    if (description) {
-      body.description = description;
-
-      if (title) {
-        body.title = title;
-      }
-      if (description) {
-        body.description = description;
-      }
-      try {
-        const editresponse = await fetch(`http://localhost:5000/tasks/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-        document.getElementById("ModalContainer").innerHTML = "";
-        getTasks();
-      } catch (err) {
-        console.log(err, "erro");
-      }
+    try {
+      await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body),
+      });
+      document.getElementById("ModalContainer").innerHTML = "";
+      getTasks();
+    } catch (err) {
+      console.log(err, "erro");
     }
   };
 }
+
 async function taskdone(id, done) {
   try {
-    const responsedone = await fetch(`http://localhost:5000/tasks/${id}`, {
+    await fetch(`http://localhost:5000/tasks/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ done: done ? 0 : 1 }),
     });
     getTasks();
@@ -160,17 +150,11 @@ async function taskdone(id, done) {
 function addBtnGrups() {
   const div = document.getElementById("btnGroupheader");
   div.innerHTML = `
-        <div class="btn-group" role="group">
-          <button
-            type="button"
-
-            class="btn btn-primary"
-          >
-          <a class="dropdown-item" href="loginPage.html">change user</a>            
-          </button>
-        </div>
         <button class="btn btn-primary">
-          <a class="dropdown-item" href="newtask.html?user=${users}">new task</a>
+          <a class="dropdown-item" href="newtask.html">new task</a>
+        </button>
+        <button class="btn btn-primary">
+          <a class="dropdown-item" href="account.html">user data</a>
         </button>`;
 }
 addBtnGrups();
