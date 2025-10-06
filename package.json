@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "front": "nodemon main.js",
-    "back": "nodemon server/model.js",
+    "back": "nodemon server/server.js",
     "dev": "concurrently \"npm run front\" \"npm run back\""
   },
   "dependencies": {
