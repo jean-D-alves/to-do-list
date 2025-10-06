@@ -31,11 +31,11 @@ export async function initDb() {
   return db;
 }
 
-export async function getTaskId(db,id,userId) {
-  const task = await db.get(
-    "SELECT * FROM tasks WHERE id = ? AND user = ?",
-    [id, userId]
-  );
+export async function getTaskId(db, id, userId) {
+  const task = await db.get("SELECT * FROM tasks WHERE id = ? AND user = ?", [
+    id,
+    userId,
+  ]);
   return task;
 }
 
@@ -82,9 +82,11 @@ export async function patchTask(db, id, userId, { done, title, description }) {
   return updatedTask;
 }
 
-export async function deleteTask(db,id,userId) {
-      await db.run("DELETE FROM tasks WHERE id = ? AND user = ?", [
-      id,
-      userId,
-    ]);
+export async function deleteTask(db, id, userId) {
+  await db.run("DELETE FROM tasks WHERE id = ? AND user = ?", [id, userId]);
+}
+export async function DashBoard(db, userId, date) {
+  const totalDonefalse = await db.get("SELECT COUNT(*) as total FROM tasks WHERE user = ? AND done = 0",[userId])
+  const totalDonetrue = await db.get("SELECT COUNT(*) as total FROM tasks WHERE user = ? AND done = 1",[userId])
+  return ({totalDonetrue ,totalDonefalse})
 }

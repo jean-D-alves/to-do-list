@@ -6,6 +6,7 @@ import {
   initDb,
   patchTask,
   postTask,
+  DashBoard,
 } from "../models/tasks.js";
 
 export async function ControltaskId(req, res) {
@@ -71,5 +72,14 @@ export async function controlDeleteTask(req, res) {
     res.status(200).json({ message: "Task deletada com sucesso", id });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+}
+
+export async function controlDashboard(req,res) {
+  try{
+    const dashboard = await DashBoard(req.db,req.user.id)
+    res.status(200).json(dashboard)
+  }catch(err){
+    res.status(200).json({erro: err.message})
   }
 }

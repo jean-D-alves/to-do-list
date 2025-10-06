@@ -6,6 +6,7 @@ import {
   controlTask,
   controlPatchTask,
   controlDeleteTask,
+  controlDashboard,
 } from "../controllers/ControllerTasks.js";
 
 const router = express.Router();
@@ -19,5 +20,7 @@ router.post("/tasks", auth, controlPostTask);
 router.patch("/tasks/:id", auth, controlPatchTask);
 
 router.delete("/tasks/:id", auth, controlDeleteTask);
+
+router.get("/dashboard", auth, controlDashboard)
 
 export default router;
