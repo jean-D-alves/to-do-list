@@ -72,3 +72,14 @@ export async function controlRegistedUser(req, res) {
     return res.status(500).json({ error: error.message });
   }
 }
+export async function controlCheckToken(req, res) {
+  try {
+    const user = await getUserByid(req.db, req.user.id);
+    if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
+
+    const { password, ...userData } = user;
+    res.status(200).json({ user: userData });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
