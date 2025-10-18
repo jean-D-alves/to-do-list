@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { getUser, getUserByid, postUser } from "../models/users.js";
 
-const SECRET = "chave";
+const SECRET = process.env.SECRETJWT
 
 export async function controlLoginUser(req, res) {
   const { email, password } = req.body;

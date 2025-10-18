@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "front": "nodemon main.js",
-    "dev": "nodemon server/server.js"
+    "dev": "nodemon server/server.js",
+    "start": "node server/server.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
