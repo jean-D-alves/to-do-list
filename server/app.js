@@ -1,12 +1,15 @@
 import express from "express";
 import loginRoutes from "./routes/loginRoutes.js";
 import tasksRoutes from "./routes/tasksRoutes.js";
+import dotenv from "dotenv"
 import { applyGlobalMiddleware } from "./middleware/globalMiddleware.js";
 import { initDb , opendb} from "./models/tasks.js";
 
 export const app = express();
 
 applyGlobalMiddleware(app);
+
+dotenv.config()
 
 await initDb();
 app.use(async (req, res, next) => {

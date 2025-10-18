@@ -1,7 +1,10 @@
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import { getUser, getUserByid, postUser } from "../models/users.js";
+
+dotenv.config()
 
 const SECRET = process.env.SECRETJWT
 
