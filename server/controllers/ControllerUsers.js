@@ -26,10 +26,11 @@ export async function controlLoginUser(req, res) {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 3600000,
     });
+
     res.status(200).json(userData);
   } catch (error) {
     res.status(500).json({ error: error.message });
